@@ -381,6 +381,16 @@ class Provider(object):
         # get_instance_metadata is imported here because of a circular
         # dependency.
         boto.log.debug("Retrieving credentials from metadata server.")
+
+        from botocore.credentials import ContainerProvider
+        provider = ContainerProvider()
+        result = provider.load()
+        if result:
+            self._access_key = result.access_key
+            self._secret_key = result.secret_key
+            self._security_token = result.token
+            expires_at = expiry_time
+
         from boto.utils import get_instance_metadata
         timeout = config.getfloat('Boto', 'metadata_service_timeout', 1.0)
         attempts = config.getint('Boto', 'metadata_service_num_attempts', 1)
