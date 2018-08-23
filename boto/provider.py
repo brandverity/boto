@@ -390,6 +390,7 @@ class Provider(object):
             self._secret_key = result.secret_key
             self._security_token = result.token
             self._credential_expiry_time = result._expiry_time
+            return
 
         from boto.utils import get_instance_metadata
         timeout = config.getfloat('Boto', 'metadata_service_timeout', 1.0)
